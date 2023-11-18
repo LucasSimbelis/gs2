@@ -7,12 +7,6 @@ window.addEventListener("load", () => {
   atualizar()
 })
 
-document.querySelector("#pendentes").addEventListener("click", () => {
-  lista_tarefas = JSON.parse(localStorage.getItem("lista_tarefas")) || []
-  lista_tarefas = lista_tarefas.filter(tarefa => tarefa.concluida == false)
-  atualizar()
-})
-
 document.querySelector("#home").addEventListener("click", () => {
   lista_tarefas = JSON.parse(localStorage.getItem("lista_tarefas")) || []
   lista_tarefas = lista_tarefas
@@ -28,9 +22,9 @@ document.querySelector("#busca").addEventListener("keyup", () => {
 function cadastrar() {
   const modal = bootstrap.Modal.getInstance(document.querySelector("#exampleModal"))
   let titulo = document.querySelector("#titulo").value
-  let descricao = document.querySelector("#descricao").value
-  let temporadas = document.querySelector("#temporadas").value
-  let categoria = document.querySelector("#categoria").value
+  let data = document.querySelector("#data").value
+  let anos = document.querySelector("#anos").value
+  let score = document.querySelector("#score").value
   let medicamento = document.querySelector("#medicamento").value
   let quantidade = document.querySelector("#quantidade").value
 
@@ -38,10 +32,9 @@ function cadastrar() {
   const tarefa = {
     id: Date.now(),
     titulo: titulo,
-    descricao: descricao,
-    temporadas: temporadas,
-    categoria: categoria,
-    concluida: false,
+    data: data,
+    anos: anos,
+    score: score,
     medicamento: medicamento,
     quantidade: quantidade
   }
@@ -51,8 +44,8 @@ function cadastrar() {
     return
   }
 
-  if (tarefa.categoria == "Score") {
-    document.querySelector("#categoria").classList.add("is-invalid")
+  if (tarefa.score == "Score") {
+    document.querySelector("#score").classList.add("is-invalid")
     return
   }
 
@@ -65,8 +58,8 @@ function cadastrar() {
 
   document.querySelector("#tarefas").innerHTML += gerarCard(tarefa)
   document.querySelector("#titulo").value = ""
-  document.querySelector("#descricao").value = ""
-  document.querySelector("#temporadas").value = ""
+  document.querySelector("#data").value = ""
+  document.querySelector("#anos").value = ""
   document.querySelector("#medicamento").value = ""
   document.querySelector("#quantidade").value = ""
 
@@ -87,7 +80,7 @@ function salvar() {
 }
 
 function apagar(id) {
-  lista_tarefas = lista_tarefas.filter((tarefa) => { //isso é igual &
+  lista_tarefas = lista_tarefas.filter((tarefa) => {
     return tarefa.id != id
   })
   salvar()
@@ -96,21 +89,19 @@ function apagar(id) {
 
 function gerarCard(tarefa) {
 
-  const disabled = (tarefa.concluida) ? "disabled" : "" //Depois do "?" é quando for verdadeiro, depois do ":" é quando falso
-
   let corCategoria = "warning"
-  if (tarefa.categoria == "Alto riso (4-20)") corCategoria = "danger"
-  if (tarefa.categoria == "Baixo risco (0-3)") corCategoria = "info"
+  if (tarefa.score == "Alto riso (4-20)") corCategoria = "danger"
+  if (tarefa.score == "Baixo risco (0-3)") corCategoria = "info"
 
   return `<div class="col-12 col-md-6 col-lg-3">
     <div class="card mb-2">
       <div class="card-header">${tarefa.titulo}</div>
       <div class="card-body">
-        <p class="card-text">${tarefa.descricao}</p>
+        <p class="card-text">${tarefa.data}</p>
         <p>
-          <span class="badge text-bg-${corCategoria}">${tarefa.categoria}</span>
+          <span class="badge text-bg-${corCategoria}">${tarefa.score}</span>
         </p>
-        <p>${tarefa.temporadas} Anos</p>
+        <p>${tarefa.anos} Anos</p>
         <p>${tarefa.medicamento} ${tarefa.quantidade}mg</p>
         
         <a href="#" onClick='apagar(${tarefa.id})' class="btn btn-danger">

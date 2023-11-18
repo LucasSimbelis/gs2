@@ -35,7 +35,7 @@
   </nav>
 
   <div class="container">
-    <!-- Button trigger modal -->
+
     <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Cadastrar paciente
     </button>
@@ -45,10 +45,9 @@
     <div id="tarefas" class="row">
 
 
-    </div> <!-- row -->
-  </div>  <!-- container -->
+    </div>
+  </div> 
 
-  <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -62,13 +61,13 @@
               <input id="titulo" type="text" class="form-control" placeholder="Nome" aria-label="nome" />
             </div>
             <div class="col-12 mb-1">
-              <input id="descricao" type="date" class="form-control" placeholder="Data" aria-label="data" />
+              <input id="data" type="date" class="form-control" placeholder="Data" aria-label="data" />
             </div>
             <div class="col-6">
-              <input id="temporadas" type="number" class="form-control" placeholder="Idade" aria-label="idade" min="60"/>
+              <input id="anos" type="number" class="form-control" placeholder="Idade" aria-label="idade" min="60"/>
             </div>
             <div class="col-6">
-              <select id="categoria" class="form-select" aria-label="Default select example">
+              <select id="score" class="form-select" aria-label="Default select example">
                 <option selected>Score</option>
                 <option>Baixo risco (0-3)</option>
                 <option>Alto riso (4-20)</option>
