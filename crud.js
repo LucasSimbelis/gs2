@@ -13,12 +13,6 @@ document.querySelector("#pendentes").addEventListener("click", () => {
   atualizar()
 })
 
-document.querySelector("#concluidas").addEventListener("click", () => {
-  lista_tarefas = JSON.parse(localStorage.getItem("lista_tarefas")) || []
-  lista_tarefas = lista_tarefas.filter(tarefa => tarefa.concluida == true)
-  atualizar()
-})
-
 document.querySelector("#home").addEventListener("click", () => {
   lista_tarefas = JSON.parse(localStorage.getItem("lista_tarefas")) || []
   lista_tarefas = lista_tarefas
@@ -37,6 +31,8 @@ function cadastrar() {
   let descricao = document.querySelector("#descricao").value
   let temporadas = document.querySelector("#temporadas").value
   let categoria = document.querySelector("#categoria").value
+  let medicamento = document.querySelector("#medicamento").value
+  let quantidade = document.querySelector("#quantidade").value
 
 
   const tarefa = {
@@ -45,7 +41,9 @@ function cadastrar() {
     descricao: descricao,
     temporadas: temporadas,
     categoria: categoria,
-    concluida: false
+    concluida: false,
+    medicamento: medicamento,
+    quantidade: quantidade
   }
 
   if (tarefa.titulo.length == 0) {
@@ -53,8 +51,13 @@ function cadastrar() {
     return
   }
 
-  if (tarefa.categoria == "Categoria") {
+  if (tarefa.categoria == "Score") {
     document.querySelector("#categoria").classList.add("is-invalid")
+    return
+  }
+
+  if (tarefa.medicamento == "Medicamento") {
+    document.querySelector("#medicamento").classList.add("is-invalid")
     return
   }
 
@@ -64,6 +67,8 @@ function cadastrar() {
   document.querySelector("#titulo").value = ""
   document.querySelector("#descricao").value = ""
   document.querySelector("#temporadas").value = ""
+  document.querySelector("#medicamento").value = ""
+  document.querySelector("#quantidade").value = ""
 
 
   salvar()
@@ -89,21 +94,13 @@ function apagar(id) {
   atualizar()
 }
 
-function concluir(id) {
-  let tarefa_encontrada = lista_tarefas.find(tarefa => tarefa.id == id) // a isso &
-  tarefa_encontrada.concluida = true
-  salvar()
-  atualizar()
-}
-
 function gerarCard(tarefa) {
 
   const disabled = (tarefa.concluida) ? "disabled" : "" //Depois do "?" é quando for verdadeiro, depois do ":" é quando falso
 
   let corCategoria = "warning"
-  if (tarefa.categoria == "Ação") corCategoria = "danger"
-  if (tarefa.categoria == "Comédia") corCategoria = "primary"
-  if (tarefa.categoria == "Romance") corCategoria = "info"
+  if (tarefa.categoria == "Alto riso (4-20)") corCategoria = "danger"
+  if (tarefa.categoria == "Baixo risco (0-3)") corCategoria = "info"
 
   return `<div class="col-12 col-md-6 col-lg-3">
     <div class="card mb-2">
@@ -113,10 +110,9 @@ function gerarCard(tarefa) {
         <p>
           <span class="badge text-bg-${corCategoria}">${tarefa.categoria}</span>
         </p>
-        <p>${tarefa.temporadas}Temporadas</p>
-        <a href="#" onClick='concluir(${tarefa.id})' class="btn btn-success ${disabled}">
-          <i class="bi bi-eye"></i>
-        </a>
+        <p>${tarefa.temporadas} Anos</p>
+        <p>${tarefa.medicamento} ${tarefa.quantidade}mg</p>
+        
         <a href="#" onClick='apagar(${tarefa.id})' class="btn btn-danger">
           <i class="bi bi-x-lg"></i>
         </a>
